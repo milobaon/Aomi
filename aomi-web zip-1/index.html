@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AOMI — Milo Baón</title>
+<link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --white:#FAFAF8;--off:#F3F1ED;--ink:#131311;--mid:#8A8880;
+  --faint:#D8D4CE;--blue:#1B3A5C;--blue2:#2E5F8A;--gold:#9C7B2E;
+}
+html{scroll-behavior:smooth}
+body{background:var(--white);color:var(--ink);font-family:'Cormorant Garamond',serif;overflow-x:hidden}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  padding:1.1rem 5rem;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(250,250,248,.15);backdrop-filter:blur(8px);
+  transition:all .5s;
+}
+nav.scrolled{background:rgba(250,250,248,.97);border-bottom:1px solid var(--faint);}
+.nav-brand{text-decoration:none;}
+.nav-logo{
+  font-family:'Tenor Sans',sans-serif;font-size:1.2rem;
+  letter-spacing:.45em;color:var(--white);line-height:1;transition:color .4s;
+}
+nav.scrolled .nav-logo{color:var(--blue);}
+.nav-sub{
+  font-family:'Montserrat',sans-serif;font-size:.46rem;font-weight:400;
+  letter-spacing:.3em;text-transform:uppercase;color:rgba(250,250,248,.7);
+  display:block;margin-top:.2rem;transition:color .4s;
+}
+nav.scrolled .nav-sub{color:var(--mid);}
+.nav-links{display:flex;gap:2.8rem;list-style:none;}
+.nav-links a{
+  font-family:'Montserrat',sans-serif;font-size:.58rem;font-weight:500;
+  letter-spacing:.25em;text-transform:uppercase;
+  color:rgba(250,250,248,.8);text-decoration:none;transition:color .3s;
+}
+nav.scrolled .nav-links a{color:var(--mid);}
+.nav-links a:hover{color:var(--white);}
+nav.scrolled .nav-links a:hover{color:var(--blue);}
+.o{display:inline-block;transform:rotate(20deg) translateY(.06em);}
+
+/* HERO — full bleed */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;flex-direction:column;
+  background:var(--ink);overflow:hidden;
+}
+.hero-bg{position:absolute;inset:0;}
+.hero-bg img{
+  width:100%;height:100%;object-fit:cover;object-position:center 40%;
+  display:block;opacity:0;animation:fadeIn 1.6s ease forwards .2s;
+}
+.hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,
+    rgba(19,19,17,.45) 0%,
+    rgba(19,19,17,.1) 30%,
+    rgba(19,19,17,.1) 60%,
+    rgba(19,19,17,.55) 100%
+  );
+}
+.hero-body{
+  position:relative;z-index:2;flex:1;
+  display:flex;flex-direction:column;
+  justify-content:space-between;align-items:center;
+  padding:5rem 5rem 4rem;text-align:center;
+}
+.hero-aomi{
+  font-family:'Tenor Sans',sans-serif;
+  font-size:clamp(5rem,13vw,15rem);
+  font-weight:400;letter-spacing:0;line-height:.9;
+  color:var(--white);
+  opacity:0;animation:riseIn 1.2s ease forwards .5s;
+  display:flex;justify-content:center;align-items:baseline;
+  gap:.65em;width:100%;
+}
+.a-l{display:inline-block;}
+.hero-bottom{display:flex;flex-direction:column;align-items:center;gap:1.8rem;opacity:0;animation:riseIn 1s ease forwards 1s;}
+.hero-q{
+  font-family:'Montserrat',sans-serif;
+  font-size:clamp(.85rem,1.5vw,1.2rem);font-weight:500;
+  letter-spacing:.2em;text-transform:uppercase;color:rgba(250,250,248,.85);
+}
+.hero-btns{display:flex;gap:1rem;}
+
+/* STRIP */
+.strip{
+  background:var(--blue);
+  display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;
+}
+.strip-item{padding:1.1rem 3rem;display:flex;flex-direction:column;gap:.2rem;}
+.strip-div{background:rgba(250,250,248,.12);}
+.strip-l{font-family:'Montserrat',sans-serif;font-size:.44rem;font-weight:300;letter-spacing:.4em;text-transform:uppercase;color:rgba(250,250,248,.4);}
+.strip-v{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:500;letter-spacing:.12em;color:rgba(250,250,248,.85);}
+
+/* BUTTONS */
+.btn-solid{font-family:'Montserrat',sans-serif;font-size:.52rem;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--blue);background:var(--white);padding:1rem 2.5rem;text-decoration:none;display:inline-block;min-width:200px;text-align:center;border:1.5px solid var(--white);transition:all .3s;}
+.btn-solid{font-family:'Montserrat',sans-serif;font-size:.52rem;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--blue);background:var(--white);padding:1rem 2.5rem;text-decoration:none;display:inline-block;min-width:200px;text-align:center;border:1.5px solid var(--white);transition:all .3s;}.btn-solid:hover{background:var(--off);border-color:var(--off);}
+.btn-ghost{
+  font-family:'Montserrat',sans-serif;font-size:.52rem;font-weight:500;
+  letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(250,250,248,.7);border:1.5px solid rgba(250,250,248,.25);
+  padding:1rem 2.5rem;text-decoration:none;
+  display:inline-block;min-width:200px;text-align:center;transition:all .3s;
+}
+.btn-ghost:hover{border-color:rgba(250,250,248,.6);color:var(--white);}
+.btn-ink{
+  font-family:'Montserrat',sans-serif;font-size:.52rem;font-weight:500;
+  letter-spacing:.28em;text-transform:uppercase;
+  color:var(--white);background:var(--ink);
+  padding:1rem 2.8rem;text-decoration:none;display:inline-block;transition:background .3s;
+}
+.btn-ink:hover{background:var(--blue);}
+.btn-w{
+  font-family:'Montserrat',sans-serif;font-size:.52rem;font-weight:500;
+  letter-spacing:.28em;text-transform:uppercase;
+  color:var(--blue);background:var(--white);
+  padding:1.1rem 3rem;text-decoration:none;
+  display:inline-block;min-width:210px;text-align:center;transition:background .3s;
+}
+.btn-w:hover{background:var(--off);}
+.btn-gw{
+  font-family:'Montserrat',sans-serif;font-size:.52rem;font-weight:500;
+  letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(250,250,248,.7);border:1.5px solid rgba(250,250,248,.25);
+  padding:1.1rem 3rem;text-decoration:none;
+  display:inline-block;min-width:210px;text-align:center;transition:all .3s;
+}
+.btn-gw:hover{border-color:rgba(250,250,248,.7);color:var(--white);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* TICKER */
+.ticker{
+  background:var(--ink);overflow:hidden;white-space:nowrap;
+  padding:.85rem 0;display:flex;
+  border-top:1px solid rgba(250,250,248,.06);
+}
+.ticker span{
+  font-family:'Montserrat',sans-serif;font-size:.46rem;font-weight:300;
+  letter-spacing:.4em;text-transform:uppercase;color:rgba(250,250,248,.35);
+  display:inline-block;animation:ticker 30s linear infinite;padding-right:4rem;
+}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* FULL BLEED WORK */
+.w-full{position:relative;overflow:hidden;cursor:pointer;background:var(--off);}
+.w-full img{width:100%;display:block;max-height:90vh;object-fit:cover;object-position:center;transition:transform 10s ease;}
+.w-full:hover img{transform:scale(1.03);}
+.w-full-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(10,20,35,.82) 0%,rgba(10,20,35,0) 45%);
+  display:flex;align-items:flex-end;padding:3.5rem 5rem;
+}
+.w-num{
+  font-family:'Cormorant Garamond',serif;font-size:5.5rem;font-style:italic;
+  font-weight:300;color:rgba(250,250,248,.1);
+  position:absolute;top:2rem;left:4rem;line-height:1;
+}
+.w-info{display:flex;flex-direction:column;gap:.4rem;}
+.w-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3vw,3rem);font-style:italic;font-weight:300;color:rgba(250,250,248,.95);}
+.w-meta{font-family:'Montserrat',sans-serif;font-size:.44rem;font-weight:300;letter-spacing:.35em;text-transform:uppercase;color:rgba(250,250,248,.4);}
+
+/* DUO WORKS */
+.w-duo{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--ink);}
+.w-duo-item{overflow:hidden;cursor:pointer;}
+.w-duo-img img{width:100%;display:block;aspect-ratio:1/1;object-fit:cover;transition:transform 1.2s ease,filter .6s;filter:saturate(.85);}
+.w-duo-item:hover .w-duo-img img{transform:scale(1.05);filter:saturate(1);}
+.w-duo-cap{padding:1.5rem 2rem 2rem;background:var(--ink);display:flex;flex-direction:column;gap:.3rem;}
+.w-num-sm{font-family:'Cormorant Garamond',serif;font-size:.9rem;font-style:italic;font-weight:300;color:rgba(250,250,248,.2);}
+.w-title-sm{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-style:italic;font-weight:300;color:rgba(250,250,248,.85);}
+.w-meta-sm{font-family:'Montserrat',sans-serif;font-size:.42rem;font-weight:300;letter-spacing:.3em;text-transform:uppercase;color:rgba(250,250,248,.3);}
+
+/* PUNCH */
+.punch{padding:8rem 5rem;display:flex;justify-content:center;align-items:center;background:var(--ink);}
+.punch-inner{max-width:900px;text-align:center;}
+.punch-line{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3vw,3.2rem);font-weight:300;color:rgba(250,250,248,.35);line-height:1.5;margin-bottom:.4rem;}
+.punch-em{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4.5vw,5rem);font-style:italic;font-weight:300;color:rgba(250,250,248,.92);line-height:1.2;margin-top:1rem;}
+
+/* CTA ROW */
+.cta-row{padding:4.5rem 5rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--faint);background:var(--white);}
+.cta-txt{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:italic;font-weight:300;color:var(--mid);}
+
+/* STATEMENT */
+.fullquote{padding:11rem 5rem;text-align:center;background:var(--blue);}
+.fq-line{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,4rem);font-weight:300;color:rgba(250,250,248,.3);line-height:1.4;}
+.fq-em{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,5vw,5.5rem);font-style:italic;font-weight:300;color:rgba(250,250,248,.92);line-height:1.2;margin-top:1.5rem;}
+.editorial{padding:8rem 5rem;background:var(--white);}
+.editorial-inner{display:grid;grid-template-columns:220px 1fr;gap:7rem;max-width:1200px;margin:0 auto;align-items:start;}
+.ed-label{font-family:'Montserrat',sans-serif;font-size:.5rem;font-weight:400;letter-spacing:.45em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:1rem;}
+.ed-name{font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);display:block;margin-top:.5rem;}
+.ed-lead{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-style:italic;font-weight:300;line-height:1.65;color:var(--ink);margin-bottom:2rem;}
+.ed-body p{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;line-height:1.95;color:#5a5855;margin-bottom:1.4rem;}
+.closequote{padding:9rem 5rem;text-align:center;background:var(--ink);}
+.cq-bq{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,2.8vw,2.6rem);font-style:italic;font-weight:300;color:rgba(250,250,248,.85);line-height:1.65;max-width:700px;margin:0 auto 2rem;}
+.cq-bq em{color:var(--gold);}
+.cq-cite{font-family:'Montserrat',sans-serif;font-size:.5rem;font-weight:300;letter-spacing:.4em;text-transform:uppercase;color:rgba(250,250,248,.28);}
+
+/* ABOUT */
+.split{display:grid;grid-template-columns:1fr 1fr;min-height:80vh;background:var(--white);}
+.split-img{overflow:hidden;}
+.split-img img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.88);transition:filter 1s;}
+.split:hover .split-img img{filter:saturate(1);}
+.split-text{padding:7rem 5rem;display:flex;flex-direction:column;justify-content:center;}
+.s-label{font-family:'Montserrat',sans-serif;font-size:.5rem;font-weight:400;letter-spacing:.45em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:2rem;}
+.s-h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3.5rem);font-weight:300;line-height:1.15;color:var(--ink);margin-bottom:2.5rem;}
+.s-h2 em{font-style:italic;color:var(--blue);}
+.split-text p{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;line-height:1.9;color:#5a5855;margin-bottom:1.3rem;}
+.split-text strong{color:var(--ink);font-weight:500;}
+.facts-bar{padding:3rem 5rem;background:var(--blue);}
+.facts-inner{display:grid;grid-template-columns:repeat(11,auto);align-items:center;max-width:1200px;margin:0 auto;}
+.fact{padding:0 2.5rem;text-align:center;}
+.fact-div{width:1px;height:2.2rem;background:rgba(250,250,248,.12);}
+.fact-l{font-family:'Montserrat',sans-serif;font-size:.42rem;font-weight:300;letter-spacing:.35em;text-transform:uppercase;color:rgba(250,250,248,.38);display:block;margin-bottom:.3rem;}
+.fact-v{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:500;letter-spacing:.1em;color:rgba(250,250,248,.82);}
+
+/* CONTACT */
+.contact{padding:12rem 5rem;text-align:center;background:var(--blue);}
+.contact-label{font-family:'Montserrat',sans-serif;font-size:.5rem;font-weight:400;letter-spacing:.45em;text-transform:uppercase;color:rgba(250,250,248,.38);display:block;margin-bottom:2rem;}
+.contact-h{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,6vw,6.5rem);font-style:italic;font-weight:300;line-height:1.0;color:rgba(250,250,248,.92);margin-bottom:2rem;}
+.contact-sub{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;font-weight:300;color:rgba(250,250,248,.38);line-height:1.8;margin-bottom:3.5rem;}
+.contact-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+/* FOOTER */
+footer{padding:2rem 5rem;border-top:1px solid rgba(250,250,248,.08);display:flex;justify-content:space-between;align-items:center;background:var(--ink);}
+footer p{font-family:'Montserrat',sans-serif;font-size:.44rem;font-weight:300;letter-spacing:.3em;text-transform:uppercase;color:rgba(250,250,248,.22);}
+.footer-logo{font-family:'Tenor Sans',sans-serif;font-size:.9rem;letter-spacing:.5em;color:rgba(250,250,248,.18);}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;z-index:500;background:rgba(10,15,25,.97);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s;}
+.lightbox.open{opacity:1;pointer-events:all;}
+.lb-inner{position:relative;max-width:88vw;max-height:88vh;display:flex;flex-direction:column;gap:1rem;align-items:center;}
+.lb-inner img{max-width:100%;max-height:76vh;object-fit:contain;box-shadow:0 40px 100px rgba(0,0,0,.7);}
+.lb-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;font-weight:300;color:rgba(250,250,248,.8);text-align:center;}
+.lb-meta{font-family:'Montserrat',sans-serif;font-size:.42rem;font-weight:300;letter-spacing:.3em;text-transform:uppercase;color:rgba(250,250,248,.28);text-align:center;}
+.lb-close{position:absolute;top:-2.5rem;right:0;background:none;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:.5rem;font-weight:300;letter-spacing:.4em;text-transform:uppercase;color:rgba(250,250,248,.35);transition:color .3s;}
+.lb-close:hover{color:var(--white);}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);display:flex;justify-content:space-between;width:calc(100% + 6rem);left:-3rem;pointer-events:none;}
+.lb-nav button{pointer-events:all;background:none;border:1px solid rgba(250,250,248,.15);cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:rgba(250,250,248,.5);transition:all .3s;}
+.lb-nav button:hover{border-color:rgba(250,250,248,.5);color:var(--white);}
+
+@keyframes riseIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem;}
+  .nav-links li:nth-child(3),.nav-links li:nth-child(4){display:none;}
+  .hero-body{padding:4rem 1.5rem 3rem;}
+  .strip{grid-template-columns:1fr;}
+  .strip-div{display:none;}
+  .punch{padding:5rem 1.5rem;}
+  .w-duo{grid-template-columns:1fr;}
+  .w-full-overlay{padding:2rem 1.5rem;}
+  .cta-row{flex-direction:column;gap:1.5rem;padding:3.5rem 1.5rem;text-align:center;}
+  .fullquote{padding:6rem 1.5rem;}
+  .editorial{padding:5rem 1.5rem;}
+  .editorial-inner{grid-template-columns:1fr;gap:2.5rem;}
+  .closequote{padding:6rem 1.5rem;}
+  .split{grid-template-columns:1fr;}
+  .split-img{min-height:50vw;}
+  .split-text{padding:4rem 1.5rem;}
+  .facts-bar{padding:2.5rem 1.5rem;}
+  .facts-inner{grid-template-columns:1fr;}
+  .fact-div{display:none;}
+  .fact{text-align:left;padding:.8rem 0;border-bottom:1px solid rgba(250,250,248,.1);}
+  .contact{padding:7rem 1.5rem;}
+  footer{flex-direction:column;gap:1rem;padding:2rem 1.5rem;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<div class="lightbox" id="lb">
+  <div class="lb-inner">
+    <button class="lb-close" id="lbClose">Close ✕</button>
+    <img id="lbImg" src="" alt="">
+    <span class="lb-title" id="lbTitle"></span>
+    <span class="lb-meta" id="lbMeta"></span>
+    <div class="lb-nav">
+      <button id="lbPrev">&#8592;</button>
+      <button id="lbNext">&#8594;</button>
+    </div>
+  </div>
+</div>
+
+<nav id="nav">
+  <a href="#" class="nav-brand">
+    <span class="nav-logo">A<span class="o">O</span>MI</span>
+    <span class="nav-sub">A series by Milo Baón</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#works">Works</a></li>
+    <li><a href="#statement">Statement</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="hero.jpg" alt="SALE $2.99 — Milo Baón, AOMI 2025">
+  </div>
+  <div class="hero-body">
+    <div class="hero-aomi"><span class="a-l">A</span><span class="o">O</span><span class="a-l">M</span><span class="a-l">I</span></div>
+    <div class="hero-bottom">
+      <p class="hero-q">WHERE DOES NATURE END AND CULTURE BEGIN?</p>
+      <div class="hero-btns">
+        <a href="#works" class="btn-solid">View the Series</a>
+        <a href="#statement" class="btn-ghost">Statement</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="strip-item"><span class="strip-l">Artist</span><span class="strip-v"><strong>Milo Baón</strong></span></div>
+  <div class="strip-div"></div>
+  <div class="strip-item"><span class="strip-l">Series</span><span class="strip-v">AOMI, 2025</span></div>
+  <div class="strip-div"></div>
+  <div class="strip-item"><span class="strip-l">Based</span><span class="strip-v">El Rompido, Spain</span></div>
+</div>
+
+<section id="works">
+  <div class="ticker">
+    <span>Selected Works &nbsp;·&nbsp; AOMI 2025 &nbsp;·&nbsp; Mixed media on canvas &nbsp;·&nbsp; All available &nbsp;·&nbsp; El Rompido, Spain &nbsp;·&nbsp; Selected Works &nbsp;·&nbsp; AOMI 2025 &nbsp;·&nbsp; Mixed media on canvas &nbsp;·&nbsp; All available &nbsp;·&nbsp; El Rompido, Spain &nbsp;·&nbsp;</span>
+  </div>
+
+  
+  <div class="punch">
+    <div class="punch-inner reveal">
+      <p class="punch-line">The most prized tuna in the world.</p>
+      <p class="punch-em">Tagged at $2.99.</p>
+    </div>
+  </div>
+
+  <div class="w-duo">
+    <div class="w-duo-item reveal" data-title="Proc. Marruecos" data-meta="Mixed media on canvas · AOMI · 2025 · Available" >
+      <div class="w-duo-img"><img src="gamba.jpg" alt="Proc. Marruecos"></div>
+      <div class="w-duo-cap"><span class="w-num-sm">II</span><span class="w-title-sm">Proc. Marruecos</span><span class="w-meta-sm">2025 · Available</span></div>
+    </div>
+    <div class="w-duo-item reveal" style="transition-delay:.15s" data-title="Brillo" data-meta="Mixed media on canvas · AOMI · 2025 · Available" >
+      <div class="w-duo-img"><img src="brillo.jpg" alt="Brillo"></div>
+      <div class="w-duo-cap"><span class="w-num-sm">III</span><span class="w-title-sm">Brillo</span><span class="w-meta-sm">2025 · Available</span></div>
+    </div>
+  </div>
+
+  <div class="w-full reveal" data-title="Flotador" data-meta="Mixed media on canvas · AOMI · 2025 · Available" >
+    <img src="cisne.jpg" alt="Flotador">
+    <div class="w-full-overlay">
+      <span class="w-num">IV</span>
+      <div class="w-info"><span class="w-title">Flotador</span><span class="w-meta">Mixed media on canvas · 2025 · Available</span></div>
+    </div>
+  </div>
+
+  <div class="punch">
+    <div class="punch-inner reveal">
+      <p class="punch-line">A chicken with a barcode.</p>
+      <p class="punch-line">A fish inside a bottle.</p>
+      <p class="punch-em">An octopus that does not know<br>it is inside the jar.</p>
+    </div>
+  </div>
+
+  <div class="w-duo">
+    <div class="w-duo-item reveal" data-title="Sin título V" data-meta="Mixed media on canvas · AOMI · 2025 · Available" >
+      <div class="w-duo-img"><img src="gallina.jpg" alt="Gallina con código de barras"></div>
+      <div class="w-duo-cap"><span class="w-num-sm">V</span><span class="w-title-sm">Sin título V</span><span class="w-meta-sm">2025 · Available</span></div>
+    </div>
+    <div class="w-duo-item reveal" style="transition-delay:.15s" data-title="Sin título VI" data-meta="Mixed media on canvas · AOMI · 2025 · Available" >
+      <div class="w-duo-img"><img src="pez.jpg" alt="Pez en botella"></div>
+      <div class="w-duo-cap"><span class="w-num-sm">VI</span><span class="w-title-sm">Sin título VI</span><span class="w-meta-sm">2025 · Available</span></div>
+    </div>
+  </div>
+
+  <div class="w-full reveal" data-title="El pulpo en el tarro" data-meta="Mixed media on canvas · AOMI · 2025 · Available" >
+    <img src="pulpo.jpg" alt="Pulpo en tarro">
+    <div class="w-full-overlay">
+      <span class="w-num">VII</span>
+      <div class="w-info"><span class="w-title">El pulpo en el tarro</span><span class="w-meta">Mixed media on canvas · 2025 · Available</span></div>
+    </div>
+  </div>
+
+  <div class="w-full reveal" data-title="Sin título VIII" data-meta="Mixed media on canvas · AOMI · 2025 · Available" >
+    <img src="ballena.jpg" alt="Ballena">
+    <div class="w-full-overlay">
+      <span class="w-num">VIII</span>
+      <div class="w-info"><span class="w-title">Sin título VIII</span><span class="w-meta">Mixed media on canvas · 2025 · Available</span></div>
+    </div>
+  </div>
+
+  <div class="cta-row reveal">
+    <p class="cta-txt">All works are available for acquisition</p>
+    <a href="#contact" class="btn-ink">Inquire about a work</a>
+  </div>
+</section>
+
+<section id="statement">
+  <div class="fullquote">
+    <div class="reveal">
+      <p class="fq-line">The octopus does not know it is inside the jar.</p>
+      <p class="fq-em">We prefer not to know<br>that we are the ones<br>who put it there.</p>
+    </div>
+  </div>
+  <div class="editorial">
+    <div class="editorial-inner">
+      <div class="reveal">
+        <span class="ed-label">Artist Statement</span>
+        <span class="ed-name">Milo Baón</span>
+      </div>
+      <div>
+        <p class="ed-lead reveal">My work does not answer that question. It pushes it to its limit until it breaks on its own.</p>
+        <div class="ed-body">
+          <p class="reveal" style="transition-delay:.1s">Every animal starts as a body. It ends as a product. I stay in the middle — in that exact instant when it is still both things at once.</p>
+          <p class="reveal" style="transition-delay:.2s">I work from El Rompido, Spain. Here the sea is not landscape — it is economy, identity, and symptom. Crabs inhabit estuaries where hotels discharge their wastewater. Anchovies ingest microplastics that end up on our tables. The cycle is perfect in its absurdity. Nobody planned it. Nobody stops it.</p>
+          <p class="reveal" style="transition-delay:.3s">There are no villains in these paintings. What there is instead is a mirror. A double unconsciousness: the octopus does not know it is inside the jar. We prefer not to know that we are the ones who put it there.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="closequote">
+    <div class="reveal">
+      <p class="cq-bq">"I paint with all the love and all the skill I have.<br>And then I place the world on top.<br><em>To see if anyone recognizes it.</em>"</p>
+      <span class="cq-cite">— Milo Baón</span>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="split">
+    <div class="split-img reveal">
+      <img src="pulpo.jpg" alt="AOMI — Milo Baón">
+    </div>
+    <div class="split-text reveal" style="transition-delay:.15s">
+      <span class="s-label">About the Artist</span>
+      <h2 class="s-h2">She learned to look<br>when she could<br>not <em>listen.</em></h2>
+      <p>At five years old, Milo Baón lost eighty percent of her hearing. The world kept talking. She found another way to answer it — she painted. Not as therapy, but because it was the only language in which no one asked her to repeat herself.</p>
+      <p>Seven surgeries later, painting never stopped being her mother tongue. Then her father died. For two years she did not paint — not because she didn't want to, but because the language she had was no longer capable of saying what was new.</p>
+      <p>Then she moved to <strong>El Rompido</strong>. The sea did what nature had always done: it was there, asking nothing. She looked differently. <strong>A<span class="o">O</span>MI was born.</strong></p>
+    </div>
+  </div>
+  <div class="facts-bar">
+    <div class="facts-inner reveal">
+      <div class="fact"><span class="fact-l">Artist</span><span class="fact-v"><strong>Milo Baón</strong></span></div>
+      <div class="fact-div"></div>
+      <div class="fact"><span class="fact-l">Series</span><span class="fact-v">AOMI, 2025</span></div>
+      <div class="fact-div"></div>
+      <div class="fact"><span class="fact-l">Medium</span><span class="fact-v">Mixed media on canvas</span></div>
+      <div class="fact-div"></div>
+      <div class="fact"><span class="fact-l">Works</span><span class="fact-v">8 — all available</span></div>
+      <div class="fact-div"></div>
+      <div class="fact"><span class="fact-l">Based</span><span class="fact-v">El Rompido, Huelva</span></div>
+      <div class="fact-div"></div>
+      <div class="fact"><span class="fact-l">Market</span><span class="fact-v">International</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact reveal">
+    <span class="contact-label">Acquisition &amp; Representation</span>
+    <h2 class="contact-h">Let's talk<br>about the work.</h2>
+    <p class="contact-sub">For gallery representation, private acquisition,<br>institutional inquiries and press.</p>
+    <div class="contact-btns">
+      <a href="/cdn-cgi/l/email-protection#17646362737e785776787a7e39766563" class="btn-w"><span class="__cf_email__" data-cfemail="46353233222f290627292b2f68273432">[email&#160;protected]</span></a>
+      <a href="https://instagram.com" class="btn-gw" target="_blank">Instagram</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Milo Baón — All rights reserved</p>
+  <span class="footer-logo">A<span class="o">O</span>MI</span>
+  <p>El Rompido, Spain</p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
+
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.07,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+const lb=document.getElementById('lb');
+const lbImg=document.getElementById('lbImg');
+const lbTitle=document.getElementById('lbTitle');
+const lbMeta=document.getElementById('lbMeta');
+const clickables=[...document.querySelectorAll('[data-b64]')];
+let cur=0;
+function openLB(i){cur=i;const el=clickables[i];lbImg.src=el.querySelector('img').src;lbTitle.textContent=el.dataset.title||'';lbMeta.textContent=el.dataset.meta||'';lb.classList.add('open');document.body.style.overflow='hidden';}
+function closeLB(){lb.classList.remove('open');document.body.style.overflow='';}
+clickables.forEach((el,i)=>el.addEventListener('click',()=>openLB(i)));
+document.getElementById('lbClose').addEventListener('click',closeLB);
+lb.addEventListener('click',e=>{if(e.target===lb)closeLB();});
+document.getElementById('lbPrev').addEventListener('click',e=>{e.stopPropagation();openLB((cur-1+clickables.length)%clickables.length);});
+document.getElementById('lbNext').addEventListener('click',e=>{e.stopPropagation();openLB((cur+1)%clickables.length);});
+document.addEventListener('keydown',e=
